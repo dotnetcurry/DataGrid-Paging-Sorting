@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<style type="text/css">
+    #dvDataGrid {
+       height:500px;
+       width:1200px;
+       overflow-x:scroll;
+       overflow-y:scroll;
+    }
+    #tblDatagrid,td,th {
+      border:double;
+    }
+    th {
+     background-color:darkgrey; cursor:pointer;
+     }
+    .header {
+      background-color:chocolate;
+      font-size:15px;   
+    }
+    .cedit {
+      background-color:azure;
+    }
+
+</style>
+
+<h2>Performing DataGrid Like Operations using HTML Table</h2>
+<script src="~/Scripts/jquery-2.1.1.min.js"></script>
+<script src="~/Scripts/knockout-3.2.0.js"></script>
+
+
+<table>
+    <tr>
+        <td>
+            <input type="button" value="Add Record" data-bind="click: function () { OperationsViewModel.addnewRecord(); }" />
+        </td>
+        <td>
+            Select the Page Size:
+            <select id="lstpagrec" data-bind="value:pageRowSize">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="all">All</option>
+            </select>
+        </td>
+    </tr>
+</table>
+
+<div id="dvDataGrid">
+    <table>
+        <thead>
+            @*<tr>
+                <th class="chead">
+                    EmpNo
+                </th>
+                <th class="chead">
+                    EmpName
+                </th>
+                <th class="chead">
+                    DeptName
+                </th>
+                <th class="chead">
+                    Desigation
+                </th>
+                <th class="chead">
+                    Salary
+                </th>
+                <th>
+                </th>
+                <th>
+                </th>
+            </tr>*@
+
+            <tr data-bind="foreach: tableHeadersCaptions">
+                <th data-bind="click: sortAscDesc, text: caption"></th>
+            </tr>
+        </thead>
+        @*<tbody data-bind="template: { name: currentTemplate, foreach: paginationEmployee}"></tbody>*@
+
+        <tbody data-bind="template: { name: currentTemplate, foreach: paginationEmployee}">
+            <tr>
+                <td><span data-bind="text:EmpNo"></span></td>
+                <td><span data-bind="text:EmpName"></span></td>
+                <td><span data-bind="text:DeptName"></span></td>
+                <td><span data-bind="text:Designation"></span></td>
+                <td><span data-bind="text:Salary"></span></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="7">
+                    <nav>
+                        <a href="#" title="First" data-bind="click: firstPage"><<</a>
+                        <a href="#" title="Previous" data-bind="click: previousPage"><</a>
+                        <a href="#" title="Next" data-bind="click:nextPage">></a>
+                        <a href="#" title="Last" data-bind="click:lastPage">>></a>
+                    </nav>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div>
+    <span data-bind="text:Message"></span>
+</div>
+
+
+
+<script type="text/html" id="displayOnlyTemplate">
+    <tr>
+        <td>
+            <span data-bind="text: EmpNo"></span>
+        </td>
+        <td>
+            <span data-bind="text: EmpName"></span>
+        </td>
+        <td>
+            <span data-bind="text: DeptName"></span>
+        </td>
+        <td>
+            <span data-bind="text: Designation"></span>
+        </td>
+        <td>
+            <span data-bind="text: Salary"></span>
+        </td>
+        <td>
+            <input type="button" value="Edit" data-bind="click: function () { OperationsViewModel.updateTemplate($data);}" />
+        </td>
+        <td>
+            <input type="button" value="Delete" data-bind="click: function () { OperationsViewModel.deleteEmployee($data); }" />
+        </td>
+    </tr>
+</script>
+
+<script type="text/html" id="updateTemplate">
+    <tr class="cedit">
+        <td>
+            <input type="text" data-bind="value: $data.EmpNo" id="txteno" disabled="disabled" />
+        </td>
+        <td>
+            <input type="text" data-bind="value: $data.EmpName" id="txtename" />
+        </td>
+        <td>
+            <input type="text" data-bind="value: $data.DeptName" id="txtdname" />
+        </td>
+        <td>
+            <input type="text" data-bind="value: $data.Designation" id="txtdesig" />
+        </td>
+        <td>
+            <input type="text" data-bind="value: $data.Salary" id="txtsal" />
+        </td>
+        <td>
+            <input type="button" value="Save" data-bind="click: OperationsViewModel.saveEmployee" />
+        </td>
+        <td>
+            <input type="button" value="Cancel" data-bind="click: function () { OperationsViewModel.reset(); }" />
+        </td>
+    </tr>
+</script>
+
+
+
+
+<script src="~/Scripts/MyScripts/DataGridLogic.js"></script>
+
